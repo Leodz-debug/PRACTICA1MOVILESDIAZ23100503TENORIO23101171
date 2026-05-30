@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.practica1movilesdiaz23100503tenorio23101171"
+    namespace = "com.example.travelcompanion"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.practica1movilesdiaz23100503tenorio23101171"
+        applicationId = "com.example.travelcompanion"
         minSdk = 33
         targetSdk = 36
         versionCode = 1
@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
