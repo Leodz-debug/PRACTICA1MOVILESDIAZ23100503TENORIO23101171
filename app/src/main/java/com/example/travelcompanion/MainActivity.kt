@@ -18,3 +18,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+// integrantes:
+// Leonardo Diaz 23100503
+// Santiago tenorio 23101171
