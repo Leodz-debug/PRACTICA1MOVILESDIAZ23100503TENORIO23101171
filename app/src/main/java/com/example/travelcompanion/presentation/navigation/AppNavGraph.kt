@@ -5,8 +5,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.travelcompanion.data.model.Destination
-import com.example.travelcompanion.presentation.budget.TravelBudgetScreen
-import com.example.travelcompanion.presentation.destinations.TouristDestinationsScreen
+import com.example.practica1movilesdiaz23100503tenorio23101171.TravelBudgetScreen
+import com.example.practica1movilesdiaz23100503tenorio23101171.TouristDestinationsScreen
 import com.example.travelcompanion.presentation.home.MainMenuScreen
 import com.example.travelcompanion.presentation.luggage.LuggageCalculatorScreen
 import com.example.travelcompanion.presentation.permissions.LocationPermissionScreen

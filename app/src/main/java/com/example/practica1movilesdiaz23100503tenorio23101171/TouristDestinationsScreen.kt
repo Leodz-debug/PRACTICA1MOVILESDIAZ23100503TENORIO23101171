@@ -3,65 +3,70 @@ package com.example.practica1movilesdiaz23100503tenorio23101171
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TouristDestinationsScreen(onBack: () -> Unit) {
     val destinations = listOf(
-        Destination("Perú", "Cusco", 150.0, "https://images.unsplash.com/photo-1587595431973-160d0d94add1"),
-        Destination("Francia", "París", 300.0, "https://images.unsplash.com/photo-1502602898657-3e91760cbb34"),
-        Destination("Japón", "Tokio", 250.0, "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf"),
-        Destination("Italia", "Roma", 200.0, "https://images.unsplash.com/photo-1552832230-c0197dd311b5"),
-        Destination("EE.UU.", "Nueva York", 350.0, "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9")
+        Destination("Perú", "Cusco", 150.0, "https://content.r9cdn.net/rimg/dimg/4c/ac/7e6077e1-city-45618-165ce416a23.jpg?crop=true&width=1020&height=498"),
+        Destination("Argentina", "Buenos Aires", 300.0, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5tg8KcEx_atKhnMoFfAPkoqjxPm5I986ESg&s"),
+        Destination("Rusia", "Moscú", 250.0, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaXigU2oxL-E701OanRY15_pGEY7uKLgt5-Q&s"),
+        Destination("China", "Beijin", 200.0, "https://cdn.britannica.com/20/20120-050-89764C76/Tiananmen-entryway-Imperial-City-China-Beijing.jpg"),
+        Destination("EE.UU.", "Nueva York", 350.0, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPRff5un-mxNhKxhlTTeZJp4PKTNlAhlXXkg&s")
     )
 
     val totalCost = destinations.sumOf { it.costoPromedio }
 
     Scaffold(
-        bottomBar = {
-            Button(
-                onClick = onBack,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
-            ) {
-                Text("Volver al menú principal")
-            }
+        topBar = {
+            TopAppBar(
+                title = { Text("Catálogo de Destinos", fontWeight = FontWeight.Bold) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Volver"
+                        )
+                    }
+                }
+            )
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp)
+                .padding(paddingValues),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = "Destinos Turísticos",
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
+            item {
+                Text(
+                    text = "Explora los mejores lugares del mundo",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
 
-            LazyColumn(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(destinations) { destination ->
-                    DestinationCard(destination)
-                }
+            items(destinations) { destination ->
+                DestinationCard(destination)
+            }
 
-                item {
-                    SummaryCard(count = destinations.size, totalCost = totalCost)
-                }
+            item {
+                SummaryCard(count = destinations.size, totalCost = totalCost)
             }
         }
     }
@@ -69,13 +74,16 @@ fun TouristDestinationsScreen(onBack: () -> Unit) {
 
 @Composable
 fun DestinationCard(destination: Destination) {
-    Card(
+    ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         Row(
             modifier = Modifier
-                .padding(8.dp)
+                .padding(12.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -84,25 +92,40 @@ fun DestinationCard(destination: Destination) {
                 contentDescription = destination.ciudad,
                 modifier = Modifier
                     .size(100.dp)
-                    .padding(end = 12.dp),
+                    .clip(RoundedCornerShape(12.dp)),
                 contentScale = ContentScale.Crop
             )
-            Column {
+            
+            Spacer(modifier = Modifier.width(16.dp))
+            
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = destination.ciudad,
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = destination.pais,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary
+                    color = MaterialTheme.colorScheme.primary
                 )
-                Text(
-                    text = "Costo promedio: ${String.format(Locale.US, "$%.2f", destination.costoPromedio)}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Text(
+                        text = "Costo: ",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = String.format(Locale.US, "$%.2f", destination.costoPromedio),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
             }
         }
     }
@@ -113,21 +136,65 @@ fun SummaryCard(count: Int, totalCost: Double) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+            .padding(top = 8.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth()
+        ) {
             Text(
-                text = "Resumen del Listado",
+                text = "Resumen del Catálogo 📊",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
+            
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = 12.dp),
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.2f)
+            )
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Total destinos:",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+                Text(
+                    text = "$count",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+            
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Cantidad total de destinos: $count")
-            Text(
-                text = "Suma acumulada de costos: ${String.format(Locale.US, "$%.2f", totalCost)}",
-                fontWeight = FontWeight.Bold
-            )
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Costo Total:",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+                Text(
+                    text = String.format(Locale.US, "$%.2f", totalCost),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
         }
     }
 }
