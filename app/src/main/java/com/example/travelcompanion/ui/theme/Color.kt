@@ -1,4 +1,4 @@
-package com.example.practica1movilesdiaz23100503tenorio23101171.ui.theme
+package com.example.travelcompanion.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
